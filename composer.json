@@ -1,0 +1,13 @@
+{
+    "require": {
+        "guzzle/guzzle": "3.9.2",
+        "electrolinux/phpquery": "dev-master",
+        "symfony/console": "2.5.5",
+        "monolog/monolog": "1.11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Setfive\\": "src/Setfive"
+        }
+    }
+}
