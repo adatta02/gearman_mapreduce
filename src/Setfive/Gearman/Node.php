@@ -6,23 +6,38 @@ use Guzzle\Http\Client;
 use phpQuery;
 
 class Node extends Base {
-
-    public function getKeywordsForUrl( $url ){
+        
+    private function getUrlBody( $url ){
+                
         $client = new Client();
+        $options = [CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $url, CURLOPT_TIMEOUT_MS => 500,                    
+                    CURLOPT_FOLLOWLOCATION => true, CURLOPT_CONNECTTIMEOUT_MS => 500, CURLOPT_SSLVERSION => 3];
+                
+        $body = null;
+        
+        try{            
+            $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1, 'curl.options' => $options])->send();
+            $body = $response->getBody();
+        }catch(\Exception $ex){
+            
+        }
+        
+        return $body;
+    }
+    
+    public function getKeywordsForUrl( $url ){
+                
         $keywords = [ ];
 
         try {
-
-            $options = ["CURLOPT_TIMEOUT_MS" => 500, 'CURLOPT_CONNECTTIMEOUT_MS' => 500, "CURLOPT_SSLVERSION" => 3];
-            $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1, 'curl.options' => $options])->send();
-            
-            $body = $response->getBody();
+                     
+            $body = $this->getUrlBody( $url );
 
             if( !strlen($body) ){
                 return $keywords;
             }
 
-            $doc = phpQuery::newDocument($response);
+            $doc = phpQuery::newDocument($body);
             $matchedTags = $doc["meta[name='keywords'], meta[name='Keywords'], meta[name='description']"];
 
             foreach( $matchedTags as $meta ){            
