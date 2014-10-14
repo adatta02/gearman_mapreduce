@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . "/../vendor/autoload.php";
 use Setfive\Gearman\Logger;
 use Guzzle\Http\Client;
 
-$handle = fopen( dirname(__FILE__) . "/100sites.txt", "r+" );
+$handle = fopen( dirname(__FILE__) . "/" . $argv[1], "r+" );
 $keywordCounts = [];
 $start = time();
 
