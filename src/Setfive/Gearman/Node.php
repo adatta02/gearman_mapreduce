@@ -13,7 +13,9 @@ class Node extends Base {
 
         try {
 
-            $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1])->send();
+            $options = ["CURLOPT_TCP_NODELAY" => true, "CURLOPT_TIMEOUT_MS" => 500, 'CURLOPT_CONNECTTIMEOUT_MS' => 500];
+            $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1, 'curl.options' => $options])->send();
+            
             $body = $response->getBody();
 
             if( !strlen($body) ){

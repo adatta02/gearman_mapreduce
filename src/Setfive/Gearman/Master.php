@@ -5,10 +5,15 @@ namespace Setfive\Gearman;
 class Master extends Base {
 
     private $keywordCounts = [];
-
+    protected $exitOnZero = true;    
+    
     public function countKeywords($payload){
-
-        Logger::getLogger()->addInfo( json_encode($payload) );
+        
+        if( $this->startedAt == null ){
+          $this->startedAt = time();
+        }
+        
+        // Logger::getLogger()->addInfo( json_encode($payload) );
 
         foreach( $payload["keywords"] as $keyword ){
 
@@ -29,6 +34,7 @@ class Master extends Base {
 
         $targetFile = dirname(__FILE__) . "/../../../bin/keyword_results.json";
         file_put_contents( $targetFile, json_encode($this->keywordCounts) );
+                
     }
 
     public function queueUrlForKeywords( $url ){
@@ -38,6 +44,5 @@ class Master extends Base {
 
     public function getAvailableJobs(){
         return ["countKeywords"];
-    }
-
+    }    
 }

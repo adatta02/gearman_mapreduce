@@ -8,7 +8,9 @@ class Base {
 
     private $gearmanClient = null;
     private $gearmanWorker = null;
-
+    protected $startedAt = null;
+    protected $exitOnZero = false;
+    
     public function work(){
 
         $gearman = $this->getGearmanWorker();
@@ -23,8 +25,14 @@ class Base {
 
             Logger::getLogger()->addInfo("Registering " . get_class($this) . "::" . $functionName);
         }
-
-        while( $gearman->work() ){ }
+                
+        while( $gearman->work() ){ 
+          
+          if( $this->exitOnZero ){
+            $this->exitOnZeroJobs();
+          }
+          
+        }
     }
 
     public function getGearmanClient(){
@@ -56,4 +64,29 @@ class Base {
     public function getAvailableJobs(){
         return [ ];
     }
+    
+    private function exitOnZeroJobs(){
+    
+      exec("/usr/bin/gearadmin --status", $gearStatus);
+      
+      $jobsLeft = 0;
+      foreach( $gearStatus as $line ){
+      
+        $statusParts = explode("\t", $line);    
+        if( count($statusParts) < 4 ){
+          continue;
+        }
+        
+        $jobsLeft += intval($statusParts[1]);    
+       }    
+      
+      Logger::getLogger()->addInfo("Remaining jobs: " . $jobsLeft);
+      
+      if( $jobsLeft == 0 ){
+        $totalTime = time() - $this->startedAt;
+        Logger::getLogger()->addInfo("Zero jobs left. Total time: " . $totalTime);
+        die();
+      }
+      
+    }    
 }
