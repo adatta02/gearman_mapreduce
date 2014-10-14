@@ -10,8 +10,8 @@ class Node extends Base {
     private function getUrlBody( $url ){
                 
         $client = new Client();
-        $options = [CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $url, CURLOPT_TIMEOUT_MS => 500,                    
-                    CURLOPT_FOLLOWLOCATION => true, CURLOPT_CONNECTTIMEOUT_MS => 500, CURLOPT_SSLVERSION => 3];
+        $options = [CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $url, CURLOPT_TIMEOUT_MS => 1000,                    
+                    CURLOPT_CONNECTTIMEOUT_MS => 1000, CURLOPT_SSLVERSION => 3];
                 
         $body = null;
         
@@ -23,7 +23,7 @@ class Node extends Base {
         }
         
         return $body;
-    }
+    }    
     
     public function getKeywordsForUrl( $url ){
                 

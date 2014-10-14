@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . "/../vendor/autoload.php";
 use Setfive\Gearman\Logger;
 use Guzzle\Http\Client;
 
-$handle = fopen( dirname(__FILE__) . "/" . $argv[1], "r+" );
+$handle = fopen( dirname(__FILE__) . "/site_lists/" . $argv[1], "r+" );
 $keywordCounts = [];
 $start = time();
 
@@ -47,7 +47,9 @@ function getKeywordsForUrl( $url ){
 
     try {
         
-        $options = ["CURLOPT_TIMEOUT_MS" => 500, 'CURLOPT_CONNECTTIMEOUT_MS' => 500];
+        $options = [CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $url, CURLOPT_TIMEOUT_MS => 1000,                    
+                    CURLOPT_FOLLOWLOCATION => true, CURLOPT_CONNECTTIMEOUT_MS => 1000, CURLOPT_SSLVERSION => 3];
+        
         $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1, 'curl.options' => $options])->send();
         $body = $response->getBody();
 

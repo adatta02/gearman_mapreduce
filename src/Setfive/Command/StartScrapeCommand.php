@@ -25,10 +25,10 @@ class StartScrapeCommand extends Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $filename = $input->getArgument("filename");
-        $targetFile = dirname(__FILE__) . "/../../../bin/" . $filename;
+        $targetFile = dirname(__FILE__) . "/../../../bin/site_lists/" . $filename;
 
         if( !file_exists($targetFile) ){
-            $output->write("Sorry! " . $filename . " does not seem to exist in the bin directory.");
+            $output->write("Sorry! " . $filename . " does not seem to exist in the bin/site_lists directory.\n");
             return;
         }
 
