@@ -78,9 +78,7 @@ class Base {
         }
         
         $jobsLeft += intval($statusParts[1]);    
-       }    
-      
-      Logger::getLogger()->addInfo("Remaining jobs: " . $jobsLeft);
+       }          
       
       if( $jobsLeft == 0 ){
         $totalTime = time() - $this->startedAt;
