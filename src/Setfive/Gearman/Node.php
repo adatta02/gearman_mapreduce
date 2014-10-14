@@ -25,9 +25,9 @@ class Node extends Base {
             $doc = phpQuery::newDocument($response);
             $matchedTags = $doc["meta[name='keywords'], meta[name='Keywords'], meta[name='description']"];
 
-            foreach( $matchedTags as $meta ){
+            foreach( $matchedTags as $meta ){            
                 $kw = preg_split("/[\s,]+/", pq($meta)->attr("content"));
-                $keywords = array_merge( $keywords, $kw );
+                $keywords = array_merge($keywords, $kw);                              
             }
 
         }catch(\Exception $ex){
