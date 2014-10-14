@@ -30,7 +30,7 @@ class Master extends Base {
             $this->keywordCounts[ $keyword ] += 1;
         }
 
-        arsort($this->keywordCounts);
+        krsort($this->keywordCounts);
 
         $targetFile = dirname(__FILE__) . "/../../../bin/keyword_results.json";
         file_put_contents( $targetFile, json_encode($this->keywordCounts) );

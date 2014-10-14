@@ -26,7 +26,8 @@ class Node extends Base {
             $matchedTags = $doc["meta[name='keywords'], meta[name='Keywords'], meta[name='description']"];
 
             foreach( $matchedTags as $meta ){
-                $keywords = array_merge( $keywords, explode(" ", pq($meta)->attr("content")) );
+                $kw = preg_split("/[\s,]+/", pq($meta)->attr("content"));
+                $keywords = array_merge( $keywords, $kw );
             }
 
         }catch(\Exception $ex){
