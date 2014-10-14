@@ -13,7 +13,7 @@ class Node extends Base {
 
         try {
 
-            $response = $client->get($url, ['connect_timeout' => 1])->send();
+            $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1])->send();
             $body = $response->getBody();
 
             if( !strlen($body) ){

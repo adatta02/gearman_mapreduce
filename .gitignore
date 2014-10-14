@@ -1,4 +1,6 @@
 .idea/*
 vendor/*
 composer.phar
+bin/keyword_results.json
+bin/nogearman_keyword_results.json
 

@@ -7,6 +7,7 @@ use Guzzle\Http\Client;
 
 $handle = fopen( dirname(__FILE__) . "/100sites.txt", "r+" );
 $keywordCounts = [];
+$start = time();
 
 while( ($line = fgets($handle)) ){
 
@@ -36,6 +37,9 @@ while( ($line = fgets($handle)) ){
     file_put_contents( $targetFile, json_encode($keywordCounts) );
 }
 
+$totalTime = time() - $start;
+Logger::getLogger()->addInfo("Total time: " . $totalTime);
+
 function getKeywordsForUrl( $url ){
 
     $client = new Client();
@@ -43,7 +47,7 @@ function getKeywordsForUrl( $url ){
 
     try {
 
-        $response = $client->get($url, ['connect_timeout' => 1])->send();
+        $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1])->send();
         $body = $response->getBody();
 
         if( !strlen($body) ){
