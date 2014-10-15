@@ -15,6 +15,7 @@ class Application extends ConsoleApplication {
         $this->add( new GearmanCommand() );
         $this->add( new StartScrapeCommand() );
         $this->add( new MockWorkerCommand() );
+        $this->add( new NoGearmanCommand() );                
     }
 
 }

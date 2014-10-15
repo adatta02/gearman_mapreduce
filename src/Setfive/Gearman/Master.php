@@ -7,7 +7,7 @@ class Master extends Base {
     private $keywordCounts = [];
     protected $exitOnZero = true;    
     
-    public function countKeywords($payload){
+    public function countKeywords($payload, $outputFile = "keyword_results.json"){
         
         if( $this->startedAt == null ){
           $this->startedAt = time();
@@ -30,9 +30,9 @@ class Master extends Base {
             $this->keywordCounts[ $keyword ] += 1;
         }
 
-        krsort($this->keywordCounts);
+        arsort($this->keywordCounts);
 
-        $targetFile = dirname(__FILE__) . "/../../../bin/keyword_results.json";
+        $targetFile = dirname(__FILE__) . "/../../../bin/" . $outputFile;
         file_put_contents( $targetFile, json_encode($this->keywordCounts) );
                 
     }

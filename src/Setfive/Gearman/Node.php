@@ -56,7 +56,6 @@ class Node extends Base {
     public function processUrl( $payload ){
 
         Logger::getLogger()->addInfo("Trying " . $payload["url"]);
-
         $payload["keywords"] = $this->getKeywordsForUrl( $payload["url"] );
 
         $this->getGearmanClient()->doBackground("countKeywords", json_encode($payload));

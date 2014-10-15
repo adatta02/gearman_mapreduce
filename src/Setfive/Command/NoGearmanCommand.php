@@ -11,13 +11,13 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class StartScrapeCommand extends Command {
+class NoGearmanCommand extends Command {
 
     protected function configure() {
 
-        $this->setName('setfive:start-scraper')
+        $this->setName('setfive:no-gearman-scraper')
              ->setDescription('Starts the scraper by initializing Gearman jobs.')
-            ->addArgument('filename', InputArgument::REQUIRED, 'Which filename to queue up.')
+             ->addArgument('filename', InputArgument::REQUIRED, 'Which filename to queue up.')
         ;
 
     }
@@ -33,13 +33,26 @@ class StartScrapeCommand extends Command {
         }
 
         $master = new Master();
-        $handle = fopen( $targetFile, "r+" );
-
+        $node = new Node();
+        
+        $start = time();
+        $handle = fopen( $targetFile, "r+" );        
+        
         while( ($line = fgets($handle)) ){
-            $url = "http://" . trim($line);
-            $master->queueUrlForKeywords( $url );
+        
+            if( strlen(trim($url)) == 0 ){
+              continue;
+            }
+        
+            Logger::getLogger()->addInfo("Fetching " . $url );
+            
+            $url = "http://" . trim($line);            
+            $keywords = $node->getKeywordsForUrl( $url );
+            $master->countKeywords( ["keywords" => $keywords], "nogearman_keyword_results.json" );            
         }
 
+        $totalTime = time() - $start;
+        Logger::getLogger()->addInfo("Total time: " . $totalTime);
     }
 
 }
