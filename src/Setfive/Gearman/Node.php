@@ -8,12 +8,24 @@ use phpQuery;
 class Node extends Base {
         
     private function getUrlBody( $url ){
-                
-        $client = new Client();
+                        
         $options = [CURLOPT_RETURNTRANSFER => 1, CURLOPT_URL => $url, CURLOPT_TIMEOUT_MS => 1000,                    
                     CURLOPT_CONNECTTIMEOUT_MS => 1000, CURLOPT_SSLVERSION => 3];
                 
-        $body = null;
+        $curl = curl_init();
+        curl_setopt_array($curl, $options);
+        
+        $body = null;        
+        $body = curl_exec($curl);
+        
+        curl_close($curl);        
+        
+        return $body;
+        
+        /** Guzzle kept inexplicably hanging so using straight cURL **/
+        
+        /*        
+        $client = new Client();                        
         
         try{            
             $response = $client->get($url, ['connect_timeout' => 1, 'timeout' => 1, 'curl.options' => $options])->send();
@@ -23,6 +35,7 @@ class Node extends Base {
         }
         
         return $body;
+        */
     }    
     
     public function getKeywordsForUrl( $url ){

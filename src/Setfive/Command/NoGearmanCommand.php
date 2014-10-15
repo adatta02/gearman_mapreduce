@@ -40,13 +40,13 @@ class NoGearmanCommand extends Command {
         
         while( ($line = fgets($handle)) ){
         
-            if( strlen(trim($url)) == 0 ){
+            if( strlen(trim($line)) == 0 ){
               continue;
             }
-        
-            Logger::getLogger()->addInfo("Fetching " . $url );
-            
+                                
             $url = "http://" . trim($line);            
+            Logger::getLogger()->addInfo("Fetching " . $url );
+                        
             $keywords = $node->getKeywordsForUrl( $url );
             $master->countKeywords( ["keywords" => $keywords], "nogearman_keyword_results.json" );            
         }

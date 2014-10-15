@@ -30,11 +30,10 @@ class Master extends Base {
             $this->keywordCounts[ $keyword ] += 1;
         }
 
-        arsort($this->keywordCounts);
+        asort($this->keywordCounts);
 
         $targetFile = dirname(__FILE__) . "/../../../bin/" . $outputFile;
-        file_put_contents( $targetFile, json_encode($this->keywordCounts) );
-                
+        file_put_contents( $targetFile, json_encode($this->keywordCounts) );               
     }
 
     public function queueUrlForKeywords( $url ){
